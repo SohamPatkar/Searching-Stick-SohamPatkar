@@ -1,4 +1,6 @@
 #pragma once
+#include "Gameplay/StickCollection/StickCollectionController.h"
+
 
 namespace Gameplay
 {
@@ -8,6 +10,7 @@ namespace Gameplay
 	{
 	private:
 		GameplayController* gameplay_controller;
+		Collection::StickCollectionController* collection_controller;
 
 	public:
 		GameplayService();
@@ -18,5 +21,8 @@ namespace Gameplay
 		void render();
 
 		void reset();
+
+		void searchElement(Collection::SearchType search_type);
+		Collection::SearchType getSearchType();
 	};
 }
