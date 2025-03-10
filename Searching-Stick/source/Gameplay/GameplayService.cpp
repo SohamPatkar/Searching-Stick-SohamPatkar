@@ -13,6 +13,7 @@ namespace Gameplay
 	{
 		gameplay_controller->initialize();
 		collection_controller->initialize();
+		initializeRandomSeed();
 	}
 
 	void GameplayService::update()
@@ -37,6 +38,11 @@ namespace Gameplay
 	{
 		gameplay_controller->reset();
 		collection_controller->reset();
+	}
+
+	void GameplayService::initializeRandomSeed()
+	{
+		std::srand(static_cast<unsigned int>(std::time(nullptr)));
 	}
 
 	Collection::SearchType GameplayService::getSearchType()
