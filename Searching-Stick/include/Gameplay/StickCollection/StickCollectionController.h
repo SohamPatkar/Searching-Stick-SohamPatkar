@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <random>
 #include "Gameplay/StickCollection/StickCollectionModel.h"
+#include <thread>
 
 namespace Gameplay
 {
@@ -18,12 +19,14 @@ namespace Gameplay
 			StickCollectionView* collection_view;
 			StickCollectionModel* collection_model;
 			Stick* stick_to_search;
+			std::thread search_thread;
 
 			std::vector<Stick*> sticks;
 			Collection::SearchType search_type;
 
 			int number_of_comparisons;
 			int number_of_array_access;
+			int current_operation_delay;
 
 			void initializeSticks();
 			float calculateStickWidth();
@@ -34,6 +37,8 @@ namespace Gameplay
 			void processLinearSearch();
 			void initializeSticksArray();
 			void resetVariables();
+			void joinThreads(); 
+			void processSearchThreadState();
 			float calculateStickHeight(int array_pos);
 
 		public:
@@ -48,6 +53,7 @@ namespace Gameplay
 
 			int getNumberOfComparisons();
 			int getNumberOfArrayAccess();
+			int getDelayMilliseconds();
 
 			void searchElement(SearchType search_type);
 

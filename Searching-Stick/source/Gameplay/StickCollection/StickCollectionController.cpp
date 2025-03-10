@@ -20,24 +20,30 @@ namespace Gameplay
 
 		void StickCollectionController::initialize()
 		{
+			collection_model->initialize();
 			initializeSticks();
 			reset();
 		}
 
 		void StickCollectionController::update()
 		{
+			processSearchThreadState();
+
+			collection_view->update();
 			for (int i = 0; i < sticks.size(); i++)
 				sticks[i]->stick_view->update();
 		}
 
 		void StickCollectionController::render()
 		{
+			collection_view->render();
 			for (int i = 0; i < sticks.size(); i++)
 				sticks[i]->stick_view->render();
 		}
 
 		void StickCollectionController::reset()
 		{
+			current_operation_delay = 0;
 			resetVariables();
 			shuffleSticks();
 			resetSearchStick();
@@ -108,12 +114,13 @@ namespace Gameplay
 
 		void StickCollectionController::processLinearSearch()
 		{
+			Sound::SoundService* sound_service = Global::ServiceLocator::getInstance()->getSoundService();
 			for (int i = 0; i < sticks.size(); i++)
 			{
 				number_of_array_access++;
 				number_of_comparisons++;
 
-				Global::ServiceLocator::getInstance()->getSoundService()->playSound(Sound::SoundType::COMPARE_SFX);
+				sound_service->playSound(Sound::SoundType::COMPARE_SFX);
 
 				if (sticks[i] == stick_to_search)
 				{
@@ -124,6 +131,7 @@ namespace Gameplay
 				else
 				{
 					sticks[i]->stick_view->setFillColor(collection_model->processing_element_color);
+					std::this_thread::sleep_for(std::chrono::milliseconds(current_operation_delay));
 					sticks[i]->stick_view->setFillColor(collection_model->element_color);
 				}
 			}
@@ -163,16 +171,32 @@ namespace Gameplay
 
 		void StickCollectionController::searchElement(SearchType search_type)
 		{
+			this->search_type = search_type;
+
 			switch (search_type)
 			{
 			case SearchType::LINEAR_SEARCH:
-				processLinearSearch();
+				current_operation_delay = collection_model->linear_search_delay;
+				search_thread = std::thread(&StickCollectionController::processLinearSearch, this);
 				break;
 
 			case SearchType::BINARY_SEARCH:
 				
 				break;
 			}
+		}
+
+		void StickCollectionController::processSearchThreadState()
+		{
+			if (search_thread.joinable() && stick_to_search == nullptr)
+			{
+				joinThreads();
+			}
+		}
+
+		void StickCollectionController::joinThreads()
+		{
+			search_thread.join();
 		}
 
 		SearchType StickCollectionController::getSearchType()
@@ -187,6 +211,11 @@ namespace Gameplay
 
 		StickCollectionController::~StickCollectionController()
 		{
+			if (search_thread.joinable()) search_thread.join();
+
+			for (int i = 0; i < sticks.size(); i++) delete(sticks[i]);
+			sticks.clear();
+
 			delete(collection_view);
 			delete(collection_model);
 		}
