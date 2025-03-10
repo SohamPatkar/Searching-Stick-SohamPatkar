@@ -45,13 +45,39 @@ namespace Gameplay
 		std::srand(static_cast<unsigned int>(std::time(nullptr)));
 	}
 
+	void GameplayService::searchElement(Collection::SearchType search_type)
+	{
+		collection_controller->searchElement(search_type);
+	}
+
+	int GameplayService::getNumberOfComparisons()
+	{
+		return collection_controller->getNumberOfComparisons();
+	}
+
+	int GameplayService::getNumberOfArrayAccess()
+	{
+		return collection_controller->getNumberOfArrayAccess();
+	}
+
+	int GameplayService::getDelayMilliseconds()
+	{
+		return collection_controller->getDelayMilliseconds();
+	}
+
+	int GameplayService::getNumberOfSticks()
+	{
+		return collection_controller->getNumberOfSticks();
+	}
+
+	sf::String GameplayService::getTimeComplexity()
+	{
+		return collection_controller->getTimeComplexity();
+	}
+
 	Collection::SearchType GameplayService::getSearchType()
 	{
 		return collection_controller->getSearchType();
 	}
 
-	void GameplayService::searchElement(Collection::SearchType search_type)
-	{
-		collection_controller->searchElement(search_type);
-	}
 }

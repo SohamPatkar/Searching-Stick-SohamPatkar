@@ -1,7 +1,6 @@
 #pragma once
 #include "Gameplay/StickCollection/StickCollectionController.h"
 
-
 namespace Gameplay
 {
 	class GameplayController;
@@ -24,7 +23,13 @@ namespace Gameplay
 
 		void reset();
 
-		void searchElement(Collection::SearchType search_type);
+		int getNumberOfComparisons();
+		int getNumberOfArrayAccess();
+		int getDelayMilliseconds();
+		int getNumberOfSticks();
+		sf::String getTimeComplexity();
 		Collection::SearchType getSearchType();
+
+		void searchElement(Collection::SearchType search_type);
 	};
 }
