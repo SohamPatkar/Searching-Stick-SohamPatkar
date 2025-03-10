@@ -27,6 +27,7 @@ namespace Gameplay
 			int number_of_comparisons;
 			int number_of_array_access;
 			int current_operation_delay;
+			sf::String time_complexity;
 
 			void initializeSticks();
 			float calculateStickWidth();
@@ -54,6 +55,7 @@ namespace Gameplay
 			int getNumberOfComparisons();
 			int getNumberOfArrayAccess();
 			int getDelayMilliseconds();
+			sf::String getTimeComplexity();
 
 			void searchElement(SearchType search_type);
 
