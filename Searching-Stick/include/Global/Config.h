@@ -8,6 +8,7 @@ namespace Global
 	public:
 		static const sf::String outscal_logo_texture_path;
 		static const sf::String background_texture_path;
+		static const sf::String menu_button_path;
 
 		static const sf::String linear_search_button_texture_path;
 		static const sf::String binary_search_button_texture_path;
